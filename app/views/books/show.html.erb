@@ -34,12 +34,41 @@
              </td>
                  
               <td>
-                 <%= link_to "Destroy",book_path(@book), method: :delete ,class:"btn btn-sm bg-danger text-light " %>
+                 <%= link_to "Destroy",book_path(@book), method: :delete ,class:"btn btn-sm bg-danger text-light" %>
               </td>
           <% end %>
-            </tr>
+            </td>
+            <td>
+              
+            </td>
+            <td>
+              コメント数: <%= @book.book_comments.count %>
+            </td>
+          <tr>
+            <td>
+              <% @book.book_comments.each do |book_comment| %>
+                <%= image_tag book_comment.user.get_profile_image(100,100) %>
+                <%= book_comment.comment %>
+                <% if book_comment.user == current_user %>
+                  <%= link_to "Destroy", book_book_comment_path(book_comment.book, book_comment), method: :delete ,class:" btn btn-sm bg-danger text-light " %>
+                <% end %><br>
+                <%= link_to books_path do %>
+                  <%= book_comment.user.name %>
+                <% end %>
+              <% end %>
+            </td>
+          </tr>
+          </tr>
         </tbody>
       </table>
+      
+     <div>
+       <%= form_with model: [@book, @book_comment] do |f| %>
+         <%= f.text_area :comment, rows: '5', placeholder: "コメントをここに" ,class:" btn-block"%>
+         <%= f.submit "送信" , class:"mt-1" %>
+      <% end %>
+     </div>
+      
     </div>
   </div>
 </div>
